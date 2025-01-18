@@ -14,14 +14,20 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     ) {
         super({
             jwtFromRequest: ExtractJwt.fromExtractors([
-                (request: Request) => request?.cookies?.Authentication
+                (request: Request) => {
+                    console.log(request?.cookies, request?.cookies?.Authentication)
+                    return request?.cookies?.Authentication
+                }
             ]),
             secretOrKey: configService.get("JWT_SECRET"),
             passReqToCallback: true
         })
     }
 
-    async validate({ userId }: TokenPayload) {
-        return this.usersService.getUser({_id: userId})
+    // passReqToCallback is required if jwtFromRequest is present,
+    // it passes three args (request, jwt_payload, done_callback)
+    validate(...args: [Request, TokenPayload, Function]) {
+        const jwtPayload = args[1];
+        return this.usersService.getUser({_id: jwtPayload.userId})
     }
 }
