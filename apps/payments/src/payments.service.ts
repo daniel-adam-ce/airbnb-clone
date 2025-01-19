@@ -17,18 +17,26 @@ export class PaymentsService {
     card: Stripe.PaymentMethodCreateParams.Card,
     amount: number
   ) {
-    const paymentMethod = await this.stripe.paymentMethods.create({
-      type: "card",
-      card: card
-    })
+    let paymentIntent;
+    try {
 
-    const paymentIntent = await this.stripe.paymentIntents.create({
-      payment_method: paymentMethod.id,
-      amount: amount * 100,
-      confirm: true,
-      payment_method_types: ["card"],
-      currency: "usd"
-    })
+      const paymentMethod = await this.stripe.paymentMethods.create({
+        type: "card",
+        card: {
+          token: "tok_mastercard"
+        }
+      })
+
+      paymentIntent = await this.stripe.paymentIntents.create({
+        payment_method: paymentMethod.id,
+        amount: amount * 100,
+        confirm: true,
+        payment_method_types: ["card"],
+        currency: "usd"
+      })
+    } catch (error) {
+      // console.log(error)
+    }
 
     return paymentIntent;
   }

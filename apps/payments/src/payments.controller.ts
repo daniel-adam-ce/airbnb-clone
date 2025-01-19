@@ -11,6 +11,7 @@ export class PaymentsController {
   async createCharge(
     @Payload() data: CreateChargeDto,
   ) {
+    console.log(data)
     return this.paymentsService.createCharge(data.card, data.amount)
   }
 }
