@@ -2,6 +2,7 @@ import { CanActivate, ExecutionContext, Inject, Injectable } from "@nestjs/commo
 import { map, Observable, tap } from "rxjs";
 import { AUTH_SERVICE } from "../constants";
 import { ClientProxy } from "@nestjs/microservices";
+import { UserDto } from "../dto";
 
 export {}
 
@@ -15,7 +16,7 @@ export class JwtAuthGuard implements CanActivate {
         const jwt = context.switchToHttp().getRequest().cookies?.Authentication;
         if (!jwt) return false;
 
-        return this.authClient.send("authenticate", {
+        return this.authClient.send<UserDto>("authenticate", {
             Authentication: jwt
         }).pipe(
             tap((res) => {
