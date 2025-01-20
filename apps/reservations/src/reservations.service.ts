@@ -20,6 +20,7 @@ export class ReservationsService {
           async (res) => {
             return this.reservationRepository.create({
               ...createReservationDto,
+              invoiceId: res.id,
               timestamp: new Date(),
               userId
             });
