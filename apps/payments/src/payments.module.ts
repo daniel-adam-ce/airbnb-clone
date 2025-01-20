@@ -27,8 +27,9 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
             host: configService.get("NOTIFICATIONS_HOST"),
             port: configService.get("NOTIFICATIONS_PORT"),
           }
-        })
-      }
+        }),
+        inject: [ConfigService]
+      },
     ])
   ],
   controllers: [PaymentsController],
