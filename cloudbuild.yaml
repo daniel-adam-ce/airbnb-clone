@@ -59,3 +59,5 @@ steps:
       'push',
       'us-west2-docker.pkg.dev/nestjs-airbnb-448405/notifications/production',
     ]
+options:
+  logging: CLOUD_LOGGING_ONLY
