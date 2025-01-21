@@ -17,3 +17,9 @@ spec:
       containers:
       - image: us-west2-docker.pkg.dev/nestjs-airbnb-448405/reservations/production
         name: reservations
+        env:
+        - name: MONGODB_URI
+          valueFrom:
+            secretKeyRef:
+              name: mongodb
+              key: connectionString
