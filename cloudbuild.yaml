@@ -1,0 +1,61 @@
+steps:
+  # reservations
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+      'build',
+      '-t',
+      'us-west2-docker.pkg.dev/nestjs-airbnb-448405/reservations/production',
+      '-f',
+      'apps/reservartions/Dockerfile',
+      '.'
+  ]
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+      'push',
+      'us-west2-docker.pkg.dev/nestjs-airbnb-448405/reservations/production',
+    ]
+  # auth
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+      'build',
+      '-t',
+      'us-west2-docker.pkg.dev/nestjs-airbnb-448405/auth/production',
+      '-f',
+      'apps/reservartions/Dockerfile',
+      '.'
+  ]
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+      'push',
+      'us-west2-docker.pkg.dev/nestjs-airbnb-448405/auth/production',
+    ]
+  # payments
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+      'build',
+      '-t',
+      'us-west2-docker.pkg.dev/nestjs-airbnb-448405/payments/production',
+      '-f',
+      'apps/reservartions/Dockerfile',
+      '.'
+  ]
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+      'push',
+      'us-west2-docker.pkg.dev/nestjs-airbnb-448405/payments/production',
+    ]
+  # notifications
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+      'build',
+      '-t',
+      'us-west2-docker.pkg.dev/nestjs-airbnb-448405/notifications/production',
+      '-f',
+      'apps/reservartions/Dockerfile',
+      '.'
+  ]
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+      'push',
+      'us-west2-docker.pkg.dev/nestjs-airbnb-448405/notifications/production',
+    ]
