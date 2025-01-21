@@ -6,7 +6,7 @@ steps:
       '-t',
       'us-west2-docker.pkg.dev/nestjs-airbnb-448405/reservations/production',
       '-f',
-      'apps/reservartions/Dockerfile',
+      'apps/reservations/Dockerfile',
       '.'
   ]
   - name: 'gcr.io/cloud-builders/docker'
@@ -21,7 +21,7 @@ steps:
       '-t',
       'us-west2-docker.pkg.dev/nestjs-airbnb-448405/auth/production',
       '-f',
-      'apps/reservartions/Dockerfile',
+      'apps/auth/Dockerfile',
       '.'
   ]
   - name: 'gcr.io/cloud-builders/docker'
@@ -36,7 +36,7 @@ steps:
       '-t',
       'us-west2-docker.pkg.dev/nestjs-airbnb-448405/payments/production',
       '-f',
-      'apps/reservartions/Dockerfile',
+      'apps/payments/Dockerfile',
       '.'
   ]
   - name: 'gcr.io/cloud-builders/docker'
@@ -51,7 +51,7 @@ steps:
       '-t',
       'us-west2-docker.pkg.dev/nestjs-airbnb-448405/notifications/production',
       '-f',
-      'apps/reservartions/Dockerfile',
+      'apps/notifications/Dockerfile',
       '.'
   ]
   - name: 'gcr.io/cloud-builders/docker'
