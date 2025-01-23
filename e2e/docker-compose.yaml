@@ -26,10 +26,14 @@ services:
     image: us-west2-docker.pkg.dev/nestjs-airbnb-448405/payments/production
     env_file:
       - ../apps/payments/.env
+    ports:
+      - '3003:3003'
   notifications:
     image: us-west2-docker.pkg.dev/nestjs-airbnb-448405/notifications/production
     env_file:
       - ../apps/notifications/.env
+    ports:
+      - '3004:3004'
   mongo:
     image: mongo
 
