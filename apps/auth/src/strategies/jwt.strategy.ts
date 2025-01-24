@@ -29,6 +29,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     // it passes three args (request, jwt_payload, done_callback)
     validate(...args: [Request, TokenPayload, Function]) {
         const jwtPayload = args[1];
-        return this.usersService.getUser({_id: jwtPayload.userId})
+        return this.usersService.getUser({id: jwtPayload.userId})
     }
 }

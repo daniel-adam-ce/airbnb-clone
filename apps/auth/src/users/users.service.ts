@@ -1,24 +1,27 @@
 import { Injectable, UnauthorizedException, UnprocessableEntityException } from '@nestjs/common';
-import { CreateUser } from './dtos/create-user.dto';
+import { CreateUserDto } from './dtos/create-user.dto';
 import { UsersRepository } from './users.repository';
 import * as bcrypt from "bcryptjs";
-import { GetUser } from './dtos/get-user.dto';
+import { GetUserDto } from './dtos/get-user.dto';
+import { Role, User } from '@app/common';
 
 @Injectable()
 export class UsersService {
     constructor(private readonly usersRepository: UsersRepository) { }
 
-    async create(createUser: CreateUser) {
-        await this.validateCreateUser(createUser)
-        return this.usersRepository.create({
-            ...createUser,
-            password: await bcrypt.hash(createUser.password, 10)
+    async create(createUserDto: CreateUserDto) {
+        await this.validateCreateUser(createUserDto)
+        const user = new User({
+            ...createUserDto,
+            password: await bcrypt.hash(createUserDto.password, 10),
+            roles: createUserDto.roles?.map((roleDto) => new Role(roleDto))
         })
+        return this.usersRepository.create(user)
     }
 
-    private async validateCreateUser(createUser: CreateUser) {
+    private async validateCreateUser(createUserDto: CreateUserDto) {
         try {
-            await this.usersRepository.findOne({email: createUser.email});
+            await this.usersRepository.findOne({email: createUserDto.email});
         } catch (error) {
             // valid if error
             return;
@@ -37,7 +40,7 @@ export class UsersService {
         return user;
     }
 
-    async getUser(getUser: GetUser) {
-        return this.usersRepository.findOne(getUser);
+    async getUser(getUserDto: GetUserDto) {
+        return this.usersRepository.findOne(getUserDto);
     }
 }
