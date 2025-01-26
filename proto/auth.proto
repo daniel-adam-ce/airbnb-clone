@@ -7,7 +7,7 @@ service AuthService {
 }
 
 message Authentication {
-    string Authenication = 1;
+    string Authentication = 1;
 }
 
 message UserMesage {

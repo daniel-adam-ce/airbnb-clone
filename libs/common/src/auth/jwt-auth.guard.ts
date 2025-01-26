@@ -29,7 +29,7 @@ export class JwtAuthGuard implements CanActivate, OnModuleInit {
         const roles = this.reflector.get<string[]>("roles", context.getHandler()) ?? []
 
         return this.authService.authenticate({
-            Authenication: jwt
+            Authentication: jwt
         }).pipe(
             tap((res) => {
                 if (roles.length > 0) {
