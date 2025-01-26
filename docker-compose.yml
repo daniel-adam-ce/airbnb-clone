@@ -46,3 +46,15 @@ services:
       - .:/usr/src/app
   mongo:
     image: mongo
+  gateway:
+    build:
+      context: .
+      dockerfile: ./apps/gateway/Dockerfile
+      target: development
+    command: pnpm run start:debug gateway
+    env_file:
+      - ./apps/gateway/.env
+    ports:
+      - "3004:3004"
+    volumes:
+      - .:/usr/src/app
