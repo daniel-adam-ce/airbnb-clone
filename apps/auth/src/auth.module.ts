@@ -8,6 +8,8 @@ import { ConfigService, ConfigModule } from '@nestjs/config';
 import * as Joi from "joi";
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloFederationDriver, ApolloFederationDriverConfig } from '@nestjs/apollo';
 
 @Module({
   imports: [
@@ -31,6 +33,12 @@ import { JwtStrategy } from './strategies/jwt.strategy';
         },
       }),
       inject: [ConfigService]
+    }),
+    GraphQLModule.forRoot<ApolloFederationDriverConfig>({
+      driver: ApolloFederationDriver,
+      autoSchemaFile: {
+        federation: 2
+      }
     }),
     HealthModule
   ],
