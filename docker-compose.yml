@@ -60,3 +60,4 @@ services:
       - .:/usr/src/app
     depends_on:
       - reservations
+      - auth
