@@ -60,3 +60,4 @@ k8s/**/charts
 
 # proto
 proto/*.ts
+libs/common/src/types/*.proto.ts
