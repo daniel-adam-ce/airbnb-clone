@@ -1,20 +1,24 @@
-import { CanActivate, ExecutionContext, Inject, Injectable, Logger, UnauthorizedException } from "@nestjs/common";
+import { CanActivate, ExecutionContext, Inject, Injectable, Logger, OnModuleInit, UnauthorizedException } from "@nestjs/common";
 import { catchError, map, Observable, of, tap } from "rxjs";
-import { AUTH_SERVICE } from "../constants";
-import { ClientProxy } from "@nestjs/microservices";
-import { UserDto } from "../dto";
+import { ClientGrpc } from "@nestjs/microservices";
 import { Reflector } from "@nestjs/core";
+import { AUTH_PACKAGE_NAME, AUTH_SERVICE_NAME, AuthServiceClient } from "../types";
 
 export {}
 
 @Injectable()
-export class JwtAuthGuard implements CanActivate {
+export class JwtAuthGuard implements CanActivate, OnModuleInit {
     private readonly logger = new Logger(JwtAuthGuard.name)
+    private authService: AuthServiceClient
 
     constructor(
-        @Inject(AUTH_SERVICE) private readonly authClient: ClientProxy, 
+        @Inject(AUTH_SERVICE_NAME) private readonly client: ClientGrpc, 
         private readonly reflector: Reflector
     ) { }
+
+    onModuleInit() {
+        this.authService = this.client.getService<AuthServiceClient>(AUTH_PACKAGE_NAME)
+    }
 
     canActivate(
         context: ExecutionContext
@@ -24,18 +28,21 @@ export class JwtAuthGuard implements CanActivate {
 
         const roles = this.reflector.get<string[]>("roles", context.getHandler()) ?? []
 
-        return this.authClient.send<UserDto>("authenticate", {
-            Authentication: jwt
+        return this.authService.authenticate({
+            Authenication: jwt
         }).pipe(
             tap((res) => {
                 if (roles.length > 0) {
                     const userRoles = new Set(res?.roles ?? [])
                     if (!roles.find((value) => userRoles.has(value))) {
-                        this.logger.error(`User ${res._id} does not have valid roles.`)
+                        this.logger.error(`User ${res.id} does not have valid roles.`)
                         throw new UnauthorizedException("User does not have valid roles.");
                     }
                 }
-                context.switchToHttp().getRequest().user = res;
+                context.switchToHttp().getRequest().user = {
+                    ...res,
+                    _id: res.id
+                };
             }),
             map(() => true),
             catchError((error) => {
