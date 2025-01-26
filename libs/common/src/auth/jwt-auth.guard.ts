@@ -2,9 +2,7 @@ import { CanActivate, ExecutionContext, Inject, Injectable, Logger, OnModuleInit
 import { catchError, map, Observable, of, tap } from "rxjs";
 import { ClientGrpc } from "@nestjs/microservices";
 import { Reflector } from "@nestjs/core";
-import { AUTH_PACKAGE_NAME, AUTH_SERVICE_NAME, AuthServiceClient } from "../types";
-
-export {}
+import { AUTH_SERVICE_NAME, AuthServiceClient } from "../types";
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate, OnModuleInit {
@@ -17,7 +15,7 @@ export class JwtAuthGuard implements CanActivate, OnModuleInit {
     ) { }
 
     onModuleInit() {
-        this.authService = this.client.getService<AuthServiceClient>(AUTH_PACKAGE_NAME)
+        this.authService = this.client.getService<AuthServiceClient>(AUTH_SERVICE_NAME)
     }
 
     canActivate(
