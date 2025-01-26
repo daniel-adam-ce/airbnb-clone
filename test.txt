@@ -1,0 +1,24 @@
+mutation {
+    createReservation(createReservationInput: {
+    "startDate": "11-11-2024",
+    "endDate": "11-05-2024",
+    "placeId": "12345",
+    "invoiceId": "123",
+    "charge": {
+        "amount": 5,
+        "card": {
+            "cvc": "413",
+            "exp_month": 12,
+            "exp_year": 2027,
+            "number": "4242 4242 4242 4242"
+        }
+    }
+    }) {
+        startDate
+        endDate
+        invoiceId
+        userId
+        timestamp
+        _id
+    }
+}

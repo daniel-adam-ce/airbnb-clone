@@ -55,6 +55,8 @@ services:
     env_file:
       - ./apps/gateway/.env
     ports:
-      - "3004:3004"
+      - "3006:3006"
     volumes:
       - .:/usr/src/app
+    depends_on:
+      - reservations
